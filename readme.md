@@ -1,4 +1,4 @@
-# PDF to Text Conversion
+# PDF Translation
 
 This repo provides a shell script for the conversion of pdf files to plain-text for the purposes of higher-level text processing. This implementation utilizes the job array functionality of slurm to process all files in parallel. 
 Parallelization may not be necessary for small corpora. 
