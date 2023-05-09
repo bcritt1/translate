@@ -1,13 +1,13 @@
 # PDF Translation
 
-This repo provides a shell script for the conversion of pdf files to plain-text for the purposes of higher-level text processing. This implementation utilizes the job array functionality of slurm to process all files in parallel. 
+This repo provides a shell script for the conversion of pdf files to plain-text for the purposes of translation. This implementation utilizes the job array functionality of slurm to process all files in parallel. 
 Parallelization may not be necessary for small corpora. 
 
 ## File Overview
 
-[parallel_pdf_convert.sh](/scripts/ocr/parallel_pdf_convert.sh) utilizes imagemagick, tesseract, and ghostscript to OCR pdf files. Should also work on tiffs with light tweaking.
+[translate.sh](translate.sh) utilizes imagemagick, tesseract, and [Translate Shell](https://www.soimort.org/translate-shell/) to OCR pdf files and translate them to/from languages of your choice. Should also work on tiffs with light tweaking.
 
-[parallel_pdf.sbatch](/scripts/ocr/parallel_pdf.sbatch) invokes the shell script and runs as a slurm array. 
+[translate.sbatch](translate.sbatch) invokes the shell script and runs as a slurm array. 
 
 ## Usage Instructions
 
@@ -19,46 +19,31 @@ ssh yourSUNetID@sherlock.stanford.edu
 ```
 in your terminal program of choice. 
 
-### Downloading the Scripts
+### Arranging the files
 
-Once you are logged in, you'll want to have access to the files in this repo, which you can get with a couple simple commands. First, we need to install a program called subversion:
+Once you are logged in, you'll want to have access to the files in this repo, which you can get with a couple simple commands:
+
+```bash
+git clone https://github.com/bcritt1/translate.git
 ```
-module load system subversion/1.12.2
+
+This will create a directory in your home space on Sherlock called "translate" with all the files in this repository.
+
+While we're here, let's also create directories for our outputs:
+```bash
+mkdir foreignLanguagePDFs out err
 ```
-and use that program to download the files:
+At this point, you'll want to transfer your files onto Sherlock and place them in the foreignLanguagePDFs directory:
+```bash
+rsync /path/to/files/on/your/pc SUNetID@sherlock.stanford.edu/~/foreignLanguagePDFs/
 ```
-svn export https://github.com/bcritt1/H-S-Documentation/trunk/scripts/ocr/ ocr
-```
-This will create a directory in your home space on Sherlock called "ocr" with all the files in this repository.
 
 Next, we need to give the computer permission to run our shell script:
 ```
-cd ocr/
-chmod +x parallel_pdf_convert.sh
+cd translate/
+chmod +x translate.sh
 ```
-If you ```ls``` now, you should see that your parallel_pdf_convert.sh file has changed colors, meaning it is now executable.
-
-### Tweaking your Files
-
-Now we just need to tweak two variables in the shell script to reflect your environment. 
-```
-nano parallel_pdf_convert.sh
-```
-and change the FILES and DIR variables to reflect the location of your PDFs on Sherlock. For more on transferring your data to Sherlock, see 
-[https://www.sherlock.stanford.edu/docs/storage/data-transfer/](https://www.sherlock.stanford.edu/docs/storage/data-transfer/).
-
-Another tweak in the .sbatch file and we will be good to go. 
-```
-nano pdf_convert.sbatch
-```
-Here you need to make one of the following changes depending on whether you want to run in parallel:If you don't want to run in parallel, you can simply remove the array line in the slurm instructions. If running as an array, the range 
-in this line should be adjusted to 1-n, where n is the number of files in your input directory. 
-
-I've configured the jobs for 16GB memory which worked for my small test corpus: this process should be
-relatively steady in memory usage, but if you're getting a memory error, this can be increased. Wall time is set at the default of 2 hours, but a line with eg. #SBATCH time=04:00:00 for 4 hours could be added to change this. For 
-reference, two pdfs of about 15 pages each only took about 1.5 minutes total.
-
-Finally, you'll need to change places with <USERNAME> to your username on Sherlock. 
+If you ```ls``` now, you should see that your translate.sh file has changed colors, meaning it is now executable.
 
 ### Running the Script
 
