@@ -2,8 +2,8 @@
 
 # Adapted from Andrew Aklaghi's script here: https://programminghistorian.org/en/lessons/OCR-and-Machine-Translation
 
-DIR=/home/users/$USER/foreignLanguagePDFs/
-FILES=/home/users/$USER/foreignLanguagePDFs/*.pdf
+DIR=/farmshare/learning/data/foreignLanguagePDFs/
+FILES=/farmshare/learning/data/foreignLanguagePDFs/*.pdf
 wget git.io/trans
 chmod +x ./trans
 for f in $FILES;
