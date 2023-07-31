@@ -11,35 +11,27 @@ Parallelization may not be necessary for small corpora.
 
 ## Usage Instructions
 
-### Connecting to Sherlock
+### Connecting to Farmshare
 
-To connect to Sherlock
+To connect to Farmshare
 ```
-ssh yourSUNetID@sherlock.stanford.edu
+ssh yourSUNetID@rice.stanford.edu
 ```
 in your terminal program of choice. 
 
 ### Arranging the files
 
-Once you are logged in, you'll want to have access to the files in this repo, which you can get with a couple simple commands:
+Once you are logged in, you'll want to move to the files for this lesson:
 
 ```bash
-git clone https://github.com/bcritt1/translate.git
+cd /farmshare/learning/scripts/scripts/translate
 ```
-
-This will create a directory in your home space on Sherlock called "translate" with all the files in this repository.
-
 While we're here, let's also create directories for our outputs:
 ```bash
-mkdir foreignLanguagePDFs out err
+mkdir /scratch/users/$USER/outputs ~/out ~/err
 ```
-At this point, you'll want to transfer your files onto Sherlock and place them in the foreignLanguagePDFs directory:
-```bash
-rsync /path/to/files/on/your/pc SUNetID@sherlock.stanford.edu/~/foreignLanguagePDFs/
-```
-
 Next, we need to give the computer permission to run our shell script:
-```
+```bash
 cd translate/
 chmod +x translate.sh
 ```
